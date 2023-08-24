@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import InputBox from 'components/InputBox';
 
 function App() {
   return (
-    <>
-      <InputBox />
-    </>
+    <></>
   );
 }
 
