@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
+import BoardListItem from 'components/BoardListitem';
 
 function App() {
   return (
-    <></>
+    <>
+      <BoardListItem />
+    </>
   );
 }
 
