@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
 import './App.css';
-import CommentListItem from 'components/CommentListItem';
-import { commentListMock } from 'mocks';
+import Footer from 'layouts/Footer';
 
 function App() {
   return (
-    <>
-      { commentListMock.map((commentItem) => (<CommentListItem commentItem={commentItem}/>)) }
-    </>
+    <Footer />
   );
 }
 
