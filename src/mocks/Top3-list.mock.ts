@@ -17,7 +17,7 @@ const top3ListMock: BoardItem[] = [
         boardNumber: 2,
         title: '안녕하세요',
         contents: '안녕하세요, 반갑습니다.',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBNu9VFRWGKnKsoYOy9gfMtvGqUa8WwpsL7Q&usqp=CAU',
+        imageUrl: 'https://mblogthumb-phinf.pstatic.net/MjAxODAyMjdfMTg4/MDAxNTE5Njk3MjA2MDQw.FveZYr95Wp1zHc0v8ZDd6kV9mX6JXxVPHjaeCuWfPIwg.jVENmx4PXpHTRXD4vYb3ku2s8cgPS2Epg1FNKFtesSYg.JPEG.ju_202/46.jpg?type=w800',
         viewCount: 0,
         commentCount: 0,
         favoriteCount: 0,
