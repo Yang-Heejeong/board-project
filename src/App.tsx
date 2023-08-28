@@ -1,9 +1,15 @@
+import { useLocation } from 'react-router-dom';
 import './App.css';
 import Footer from 'layouts/Footer';
 
 function App() {
+
+  const { pathname } = useLocation();
+
   return (
-    <Footer />
+    <>
+      { pathname !== '/auth' && <Footer/> }
+    </>
   );
 }
 
