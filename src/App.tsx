@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import './App.css';
 import Footer from 'layouts/Footer';
+import Header from 'layouts/Header';
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <>
+      <Header />
       { pathname !== '/auth' && <Footer/> }
     </>
   );
