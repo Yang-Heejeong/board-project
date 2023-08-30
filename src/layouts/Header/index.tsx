@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
 import './style.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AUTH_PATH ,MAIN_PATH, BOARD_WRITE_PATH, SEARCH_PATH, BOARD_DETAIL_PATH, USER_PATH, BOARD_UPDATE_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
 import { useBoardStore, useUserStore } from 'stores';
@@ -116,13 +116,50 @@ export default function Header() {
   //          component:업로드 버튼 컴포넌트          //
   const UploadButton = () => {
 
-    const { title, contents, image } = useBoardStore();
+    //          state: 게시물 제목, 내용, 이미지 전역 상태          //
+    const { title, contents, image, resetBoard } = useBoardStore();
 
+    //          event handler: 업로드 버튼 클릭 이벤트 처리          //
+    const onUploadButtonClickHandler = () => {
+      if (isBoardWritePage) {
+        alert('작성');
+        resetBoard();
+      }
+      if (isBoardUpdatePage) {
+        alert('수정');
+        resetBoard();
+      }
+    }
+
+    //          render:업로드 버튼(Active) 컴포넌트 렌더링          //
     if (title && contents)
-    return (<div className='upload-button'>업로드</div>);
-    return (<div className='upload-button-disable'>업로드</div>)
+    return (<div className='upload-button' onClick={onUploadButtonClickHandler}>업로드</div>);
+    //          render:업로드 버튼(disable) 컴포넌트 렌더링          //
+    return (<div className='upload-button-disable'>업로드</div>);
   }
 
+  //          component: 유저 페이지 버튼 컴포넌트          //
+  const UserPageButtons = () => {
+
+    //          state: path variable의 email 상태          //
+    const { email } = useParams();
+
+    //          variable: 마이페이지 여부 논리 변수          //
+    const isMyPage = user && user.email === email ;
+
+    //          event handler: 로그아웃 버튼 클릭 이벤트 처리          //
+    const onLogoutButtonClickHandler = () => {
+      setCookies('email', '', { path: '/' ,expires: new Date() });
+      setUser(null);
+    }
+
+    //          render: 본인 페이지 일 때 버튼 컴포넌트 렌더링          //
+    if (isMyPage)
+    return (<div className='logout-button' onClick={onLogoutButtonClickHandler}>로그아웃</div>);
+    //          render: 타인 페이지 일 때 버튼 컴포넌트 렌더링          //
+    return (<LoginMyPageButton />);
+  }
+   
   //          effect: 마운트시에만 실행될 함수          //
   useEffect(() => {
     setCookies('email', 'email@email.com', { path: '/' });
@@ -145,7 +182,7 @@ export default function Header() {
           { isMainPage && (<><Search /> <LoginMyPageButton /></>) }
           { isSearchPage && (<><Search /> <LoginMyPageButton /></>) }
           { isBoardDetailPage && (<><Search /> <LoginMyPageButton /></>) }
-          { isUserPage && (<></>) }
+          { isUserPage && (<UserPageButtons />) }
           { isBoardWritePage && (<UploadButton />) }
           { isBoardUpdatePage && (<UploadButton />) }
         </div>
