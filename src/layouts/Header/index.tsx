@@ -3,7 +3,7 @@ import './style.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_PATH ,MAIN_PATH, BOARD_WRITE_PATH, SEARCH_PATH, BOARD_DETAIL_PATH, USER_PATH, BOARD_UPDATE_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
-import { useUserStore } from 'stores';
+import { useBoardStore, useUserStore } from 'stores';
 import { LoginUser } from 'types';
 
 //          component: 헤더 컴포넌트          //
@@ -110,8 +110,17 @@ export default function Header() {
     //          render: 로그인 버튼 컴포넌트 렌더링 (로그인 상태가 아닐 때)          //
     return (
       <div className='login-button' onClick={onLoginButtonClickHandler}>로그인</div>
-    )
-    
+    );
+  };
+
+  //          component:업로드 버튼 컴포넌트          //
+  const UploadButton = () => {
+
+    const { title, contents, image } = useBoardStore();
+
+    if (title && contents)
+    return (<div className='upload-button'>업로드</div>);
+    return (<div className='upload-button-disable'>업로드</div>)
   }
 
   //          effect: 마운트시에만 실행될 함수          //
@@ -137,8 +146,8 @@ export default function Header() {
           { isSearchPage && (<><Search /> <LoginMyPageButton /></>) }
           { isBoardDetailPage && (<><Search /> <LoginMyPageButton /></>) }
           { isUserPage && (<></>) }
-          { isBoardWritePage && (<></>) }
-          { isBoardUpdatePage && (<></>) }
+          { isBoardWritePage && (<UploadButton />) }
+          { isBoardUpdatePage && (<UploadButton />) }
         </div>
       </div>
     </div>
