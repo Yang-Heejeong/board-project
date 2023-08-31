@@ -49,7 +49,7 @@ export default function Authentication() {
 
     //          event handler: 로그인 버튼 클릭 이벤트 처리          //
     const onSignInButtonClickHandler = () => {
-      // TODO: 로그인 처리 
+      // TODO: 로그인 처리 API 연결
       const isSuccess = email === loginInfoMock.email && password ===loginInfoMock.password;
       if (!isSuccess) {
         setError(true);
@@ -66,7 +66,8 @@ export default function Authentication() {
     const onSignUpLinkClickHandler = () => {
       setView('sign-up');
     }
-  
+    
+    //          render: sign in 카드 컴포넌트 렌더링          //
     return (
       <div className='auth-card'>
         <div className='auth-card-top'>
@@ -95,7 +96,7 @@ export default function Authentication() {
 
   //          component: sign up 카드 컴포넌트          //
   const SignUpCard = () => {
-    return (<></>)
+    return (<></>); 
   }
   
   //          render: 인증 페이지 렌더링         //
