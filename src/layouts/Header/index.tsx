@@ -162,9 +162,10 @@ export default function Header() {
    
   //          effect: 마운트시에만 실행될 함수          //
   useEffect(() => {
-    setCookies('email', 'email@email.com', { path: '/' });
-    const user: LoginUser = { email: 'email@email.com' ,nickname: '주코야키', profileImage: '' };
-    setUser(user);
+    if (cookies.email) {
+      const user: LoginUser = { email: cookies.email, nickname: '주코야키', profileImage: null}
+      setUser(user);
+    }
   }, []);
 
   //          render: 헤더 컴포넌트 렌더링          //
