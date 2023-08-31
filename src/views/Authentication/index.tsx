@@ -7,6 +7,7 @@ import loginInfoMock from 'mocks/login-list.mock';
 import { LoginUser } from 'types';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_PATH } from 'constant';
+// 되는걸까?
 
 //          component: 인증 페이지          //
 export default function Authentication() {
