@@ -7,6 +7,7 @@ import { loginInfoMock } from 'mocks';
 import { LoginUser } from 'types';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_PATH } from 'constant';
+import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 
 //          component: 인증 페이지          //
 export default function Authentication() {
@@ -168,6 +169,9 @@ export default function Authentication() {
 
     //          state: 상세 주소 상태          //
     const [addressDetail, setAddressDetail] = useState<string>('');
+    
+    //          function: 다음 주소 검색 팝업 오픈 함수          //
+    const open = useDaumPostcodePopup();
 
     //          event handler: 비밀번호 아이콘 클릭 이벤트 처리          //
     const onPasswordIconClickHandler = () => {
@@ -191,6 +195,15 @@ export default function Authentication() {
         setPasswordCheckIcon('eye-on-icon')
       }
     }
+    //          event handler: 주소 아이콘 클릭 이벤트 처리          //
+    const onAddressIconClickHandler = () => {
+      open({ onComplete });
+    }
+    //          event handler: 다음 주소 검색 완료 이벤트 처리          //
+    const onComplete = (data: Address) => {
+      const address = data.address;
+      setAddress(address);
+    }
     //          event handler: 다음 단계 버튼 클릭 이벤트 처리          //
     const onNextStepButtonClickHandler = () => {
 
@@ -202,13 +215,12 @@ export default function Authentication() {
       setPasswordCheckErrorMessage('');
 
       // description: 이메일 패턴 확인 //
-      const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9]*\.[a-zA-Z]{2,4})$/
+      const emailPattern = /^[a-zA-Z0-9]*@([-.]?[a-zA-Z0-9])*\.[a-zA-Z]{2,4}$/;
       const checkedEmail = !emailPattern.test(email);
       if (checkedEmail) {
         setEmailError(true);
         setEmailErrorMessage('이메일주소 포맷이 맞지 않습니다.')
       }
-
       // description: 비밀번호 길이 확인 //
       const checkedPassword = password.trim().length < 8;
       if (checkedPassword) {
@@ -225,6 +237,42 @@ export default function Authentication() {
       if (checkedEmail || checkedPassword || checkedPasswordCheck) return;
 
       setPage(2);
+    }
+    //          event handler: 회원가입 버튼 클릭 이벤트 처리          //
+    const onSignUpButtonClickHandler = () => {
+
+      setNicknameError(false);
+      setNicknameErrorMessage('');
+      setTelNumberError(false);
+      setTelNumberErrorMessage('');
+      setAddressError(false);
+      setAddressErrorMessage('');
+
+      // description: 닉네임 입력 여부 확인 //
+      const checkedNickname = nickname.trim().length === 0;
+      if (checkedNickname) {
+        setNicknameError(true);
+        setNicknameErrorMessage('닉네임을 입력해주세요.');
+      }
+      // description: 핸드폰 번호 입력 여부 확인 //
+      const telNumberPattern = /^[0-9]{10,12}$/;
+      const checkedTellNumber = !telNumberPattern.test(telNumber);
+      if (checkedTellNumber) {
+        setTelNumberError(true);
+        setTelNumberErrorMessage('숫자만 입력해주세요.');
+      }
+      // description: 주소 입력 여부 확인 //
+      const checkedAddress = address.trim().length === 0;
+      if (checkedAddress) {
+        setAddressError(true);
+        setAddressErrorMessage('우편번호를 선택해주세요.')
+      }
+
+      if (checkedNickname || checkedTellNumber || checkedAddress) return;
+
+      // TODO: 회원가입 처리 및 응답 처리 
+
+      setView('sign-in');
     }
 
     //          render: sign up 카드 컴포넌트 렌더링         //
@@ -243,7 +291,7 @@ export default function Authentication() {
         {page === 2 && (<>
         <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' value={nickname} setValue={setNickname} error={nicknameError} errorMessage={nicknameErrorMessage} />
         <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' value={telNumber} setValue={setTelNumber} error={telNumberError} errorMessage={telNumberErrorMessage} />
-        <InputBox label='주소*' type='text' placeholder='우편번호 찾기' value={address} setValue={setAddress} icon='right-arrow-icon' error={addressError} errorMessage={addressErrorMessage} />
+        <InputBox label='주소*' type='text' placeholder='우편번호 찾기' value={address} setValue={setAddress} icon='right-arrow-icon' error={addressError} errorMessage={addressErrorMessage} onButtonClick={onAddressIconClickHandler} />
         <InputBox label='상세주소' type='text' placeholder='상세 주소를 입력해주세요' value={addressDetail} setValue={setAddressDetail} error={false} />
         </>)}
       </div>
@@ -252,7 +300,7 @@ export default function Authentication() {
         <div className='auth-button' onClick={onNextStepButtonClickHandler}>{'다음 단계'}</div>
         )}
         {page === 2 && (<>
-        <div className='auth-button'>{'회원가입'}</div>
+        <div className='auth-button' onClick={onSignUpButtonClickHandler}>{'회원가입'}</div>
         </>)}
         <div className='auth-description-box'>
           <div className='auth-description'>{'이미 계정이 있으신가요? '}<span className='description-emphasis'>{'로그인'}</span></div>
