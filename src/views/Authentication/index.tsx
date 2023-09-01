@@ -1,9 +1,9 @@
-import { KeyboardEvent, useState, useRef } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import './style.css';
 import InputBox from 'components/InputBox';
 import { useCookies } from 'react-cookie';
 import { useUserStore } from 'stores';
-import loginInfoMock from 'mocks/login-list.mock';
+import { loginInfoMock } from 'mocks';
 import { LoginUser } from 'types';
 import { useNavigate } from 'react-router-dom';
 import { MAIN_PATH } from 'constant';
@@ -36,8 +36,8 @@ export default function Authentication() {
     //          state: 비밀번호 인풋 버튼 아이콘 상태          //
     const [passwordIcon, setPasswordIcon] = useState<'eye-off-icon' | 'eye-on-icon'>('eye-off-icon');
     //          state: 로그인 에러 상태          //
-    const [error, setError] =  useState<boolean>(false);
-    
+    const [error, setError] = useState<boolean>(false);
+
     //          event handler: 이메일 인풋 key down 이벤트 처리          //
     const onEmailKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key !== 'Enter') return;
@@ -46,11 +46,10 @@ export default function Authentication() {
     }
 
     //          event handler: 비밀번호 인풋 key down 이벤트 처리          //
-    const onPasswordKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    const onPasswordKeyDownHanlder = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key !== 'Enter') return;
       onSignInButtonClickHandler();
     }
-  
     //          event handler: 비밀번호 인풋 버튼 클릭 이벤트 처리          //
     const onPasswordIconClickHandler = () => {
       if (passwordType === 'text') {
@@ -66,12 +65,13 @@ export default function Authentication() {
     //          event handler: 로그인 버튼 클릭 이벤트 처리          //
     const onSignInButtonClickHandler = () => {
       // TODO: 로그인 처리 API 연결
-      const isSuccess = email === loginInfoMock.email && password ===loginInfoMock.password;
+      const isSuccess = email === loginInfoMock.email && password === loginInfoMock.password;
       if (!isSuccess) {
         setError(true);
         return;
       }
-      setCookie('email', email, {path: '/'});
+      
+      setCookie('email', email, { path: '/' });
 
       const user: LoginUser = { email, nickname: '주코야키', profileImage: null };
       setUser(user);
@@ -82,8 +82,8 @@ export default function Authentication() {
     const onSignUpLinkClickHandler = () => {
       setView('sign-up');
     }
-    
-    //          render: sign in 카드 컴포넌트 렌더링          //
+
+    //          render: sign in 카드 컴포넌트 렌더링         //
     return (
       <div className='auth-card'>
         <div className='auth-card-top'>
@@ -91,16 +91,16 @@ export default function Authentication() {
             <div className='auth-card-title'>{'로그인'}</div>
           </div>
           <InputBox label='이메일 주소' type='text' placeholder='이메일 주소를 입력해주세요.' error={error} value={email} setValue={setEmail} onKeyDown={onEmailKeyDownHandler} />
-          <InputBox ref={passwordRef} label='비밀번호' type={passwordType} placeholder='비밀번호를 입력해주세요.' error={error} value={password} setValue={setPassword} icon={passwordIcon} onKeyDown={onPasswordKeyDownHandler} onButtonClick={onPasswordIconClickHandler} />
+          <InputBox ref={passwordRef} label='비밀번호' type={passwordType} placeholder='비밀번호를 입력해주세요.' error={error} value={password} setValue={setPassword} icon={passwordIcon} onKeyDown={onPasswordKeyDownHanlder} onButtonClick={onPasswordIconClickHandler} />
         </div>
         <div className='auth-card-bottom'>
-        {error &&  (
+          {error && (
           <div className='auth-sign-in-error-box'>
             <div className='auth-sign-in-error-message'>
-              {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시확인해 주세요.'}
+              {'이메일 주소 또는 비밀번호를 잘못 입력했습니다.\n입력하신 내용을 다시 확인해주세요.'}
             </div>
           </div>
-        )}
+          )}
           <div className='auth-button' onClick={onSignInButtonClickHandler}>{'로그인'}</div>
           <div className='auth-description-box'>
             <div className='auth-description'>{'신규 사용자이신가요? '}<span className='description-emphasis' onClick={onSignUpLinkClickHandler}>{'회원가입'}</span></div>
@@ -109,10 +109,47 @@ export default function Authentication() {
       </div>
     );
   }
-
+  
   //          component: sign up 카드 컴포넌트          //
   const SignUpCard = () => {
-    return (<></>); 
+
+    //          state: 이메일 상태          //
+    const [email, setEmail] = useState<string>('');
+    //          state: 이메일 에러 상태          //
+    const [emailError, setEmailError] = useState<boolean>(false);
+    //          state: 이메일 에러 메세지 상태          //
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
+    //          state: 비밀번호 상태          //
+    const [password, setPassword] = useState<string>('');
+    //          state: 비밀번호 타입 상태          //
+    const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
+    //          state: 비밀번호 아이콘 상태          //
+    const [passwordIcon, setPasswordIcon] = useState<'eye-on-icon' | 'eye-off-icon'>('eye-off-icon');
+    //          state: 비밀번호 에러 상태          //
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    //          state: 비밀번호 에러 메세지 상태          //
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('');
+
+    //          render: sign up 카드 컴포넌트 렌더링         //
+    return (
+    <div className='auth-card'>
+      <div className='auth-card-top'>
+        <div className='auth-card-title-box'>
+          <div className='auth-card-title'>{'회원가입'}</div>
+          <div className='auth-card-title-page'>{'1/2'}</div>
+        </div>
+        <InputBox label='이메일 주소*' type='text' placeholder='이메일 주소를 입력해주세요.' value={email} setValue={setEmail} error={emailError} errorMessage={emailErrorMessage} />
+        <InputBox label='비밀번호*' type={passwordType} placeholder='비밀번호를 입력해주세요.' value={password} setValue={setPassword} icon={passwordIcon} error={passwordError} errorMessage={passwordErrorMessage} />
+        <InputBox />
+      </div>
+      <div className='auth-card-bottom'>
+        <div className='auth-button'>{'다음 단계'}</div>
+        <div className='auth-description-box'>
+          <div className='auth-description'>{'이미 계정이 있으신가요? '}<span className='description-emphasis'>{'로그인'}</span></div>
+        </div>
+      </div>
+    </div>
+    );
   }
   
   //          render: 인증 페이지 렌더링         //
@@ -128,8 +165,8 @@ export default function Authentication() {
             </div>
           </div>
         </div>
-        { view  === 'sign-in' && <SignInCard /> }
-        { view  === 'sign-up' && <SignUpCard /> }
+        { view === 'sign-in' && <SignInCard /> }
+        { view === 'sign-up' && <SignUpCard /> }
       </div>
     </div>
   );

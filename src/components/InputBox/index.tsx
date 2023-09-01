@@ -16,7 +16,7 @@ interface Props {
 }
 
 //          component: Input 상자 컴포넌트          //
-const Inputbox = forwardRef((props: Props, ref) => {
+const Inputbox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
     //          state: Properties          //
     const { label, type, error, placeholder, value, icon, errorMessage } = props;
     const { setValue, onKeyDown, onButtonClick } = props;
