@@ -49,3 +49,89 @@
     justify-content: space-between;
     gap: 24px;
 }
+
+#main-bottom-wrapper {
+    padding: 40px 0;
+
+    display: flex;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main-bottom-container {
+    width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-bottom-title {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.main-bottom-contents-box {
+    width: 100%;
+    display: grid;
+
+    grid-template-columns: 8fr 4fr;
+    gap: 72px;
+}
+
+.main-bottom-latest-contents-box {
+    grid-column: 1 / 2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.main-bottom-popular-word-box {
+    grid-column: 2 / 3;
+}
+
+.main-bottom-popular-word-card {
+    padding: 24px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.main-bottom-popular-card-box {
+    display: flex;
+    flex-direction: column;
+
+    gap: 24px;
+}
+
+.main-bottom-popular-card-title {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 24px;
+    font-weight: 600px;
+    line-height: 140%;
+}
+
+.main-bottom-popular-card-contents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.word-bedge {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+
+    padding: 4px 20px;
+
+    display: inline-block;
+}
+
+.word-bedge:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
