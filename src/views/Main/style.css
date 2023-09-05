@@ -1,0 +1,51 @@
+#main-top-wrapper {
+    padding: 80px 0px 40px;
+    
+    display: flex;
+    justify-content: center;
+}
+
+.main-top-container {
+    width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.main-top-intro {
+    color: rgba(0, 0, 0, 1);
+
+    text-align: center;
+    font-family: GimhaeGaya;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.8px;
+
+    white-space: pre-wrap;
+}
+
+.main-top-contents-box {
+    width: 100%;
+}
+
+.main-top-contents-title {
+    margin: 24px 0;
+
+    color: rgba(0, 0, 0, 1);
+
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.main-top-contents {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
