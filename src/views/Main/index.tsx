@@ -1,13 +1,14 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
 import './style.css';
-import { currentBoardListMock, popularWordListMock, top3ListMock } from 'mocks';
 import { BoardItem } from 'types';
-import Top3ListItem from 'components/Top3Listitem';
-import { useNavigate } from 'react-router-dom';
 import { SEARCH_PATH } from 'constant';
-import BoardListItem from 'components/BoardListitem';
+import { useState, useEffect } from 'react';
 import Pagination from 'components/Pagination';
+import { useNavigate } from 'react-router-dom';
+import Top3ListItem from 'components/Top3Listitem';
+import BoardListItem from 'components/BoardListitem';
+import { currentBoardListMock, popularWordListMock, top3ListMock } from 'mocks';
+import { usePagination } from 'hooks';
 
 //          component: 메인 페이지          //
 export default function Main() {
@@ -44,17 +45,8 @@ export default function Main() {
 
     //          state: 인기 검색어 리스트 상태          //
     const [popularWordList, setPopularWordList] = useState<string[]>([]);
-    //          state: 최신 게시물 리스트 상태          //
-    const [latestBoardList, setLatestBoardList] = useState<BoardItem[]>([]);
-
-    //          state: 현재 페이지 번호 상태          //
-    const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
-    //          state: 현재 섹션 번호 상태          //
-    const [currentSectionNumber, setCurrentSectionNumber] = useState<number>(1);
-    //          state: 보여줄 게시물 리스트 상태          //
-    const [viewBoardList, setViewBoardList] = useState<BoardItem[]>([]);
-    //          state: 보여줄 페이지 번호 리스트 상태          //
-    const [viewPageNumberList, setViewPageNumberList] = useState<number[]>([]);
+    //          state: 페이지네이션 관련 상태          //
+    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList} = usePagination();
 
     //          function: 네비게이트 함수          //
     const navagator = useNavigate();
@@ -64,56 +56,13 @@ export default function Main() {
       navagator(SEARCH_PATH(word));
     }
 
-
-    
-
-
-
     //          effect: 컴포넌트 마운트 시 인기 검색어 리스트 불러오기          //
     useEffect(() => {
       // TODO: API 호출로 변경
       setPopularWordList(popularWordListMock);
-      setLatestBoardList(currentBoardListMock);
+      setBoardList(currentBoardListMock);
     }, []);
 
-
-
-
-    //          effect: 현재 페이지가 변경될 시 보여줄 게시물 리스트 불러오기          //
-    useEffect(() => {
-
-      // const tmpList = [];
-      // for (let index = 5 * (currentPageNumber - 1); index < 5 * currentPageNumber; index++) {
-      //   if (currentBoardListMock.length === index) break;
-      //   tmpList.push(currentBoardListMock[index]);
-      // }
-
-      const FIRST_INDEX = 5 * (currentPageNumber - 1);
-      const LAST_INDEX = 5 * currentPageNumber;
-      const tmpList = currentBoardListMock.filter((item, index) => (index >= FIRST_INDEX && index < LAST_INDEX));
-      
-      setViewBoardList(tmpList);
-
-    }, [currentPageNumber]);
-    //          effect: 현재 섹션이 변경될 시 보여줄 페이지 리스트 불러오기          //
-    useEffect(() => {
-
-      const FIRST_PAGE_INDEX = 10 * (currentSectionNumber - 1) + 1;
-      const LAST_PAGE_INDEX = 10 * currentSectionNumber;
-
-      const tmpPageNumberList = [];
-
-      const TOTAL_PAGE = Math.floor((currentBoardListMock.length - 1) / 5) + 1;
-
-      for (let pageNumber = FIRST_PAGE_INDEX; pageNumber <= LAST_PAGE_INDEX; pageNumber++) {
-        if (pageNumber > TOTAL_PAGE) break;
-        tmpPageNumberList.push(pageNumber);
-      }
-
-      setViewPageNumberList(tmpPageNumberList);
-
-    } ,[currentSectionNumber]);
-    
     //          render: 메인 하단 컴포넌트 렌더링          //
     return (
       <div id='main-bottom-wrapper'>
@@ -141,7 +90,7 @@ export default function Main() {
               setCurrentPageNumber={setCurrentPageNumber}
               setCurrentSectionNumber={setCurrentSectionNumber}
               viewPageNumberList={viewPageNumberList}
-              totalSection={0}
+              totalSection={totalSection}
             />
           </div>
         </div>
