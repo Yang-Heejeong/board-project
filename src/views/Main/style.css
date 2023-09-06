@@ -1,5 +1,6 @@
 #main-top-wrapper {
-    padding: 80px 0px 40px;
+    padding: 80px 0 40px;
+
     display: flex;
     justify-content: center;
 }
@@ -47,6 +48,7 @@
 
     display: flex;
     justify-content: space-between;
+
     gap: 24px;
 }
 
@@ -64,12 +66,13 @@
 
     display: flex;
     flex-direction: column;
+
     gap: 20px;
 }
 
 .main-bottom-title {
     color: rgba(0, 0, 0, 1);
-
+    
     font-size: 24px;
     font-weight: 600;
     line-height: 140%;
@@ -78,6 +81,7 @@
 .main-bottom-contents-box {
     width: 100%;
     min-width: 1200px;
+
     display: grid;
 
     grid-template-columns: 8fr 4fr;
@@ -99,6 +103,7 @@
 
 .main-bottom-popular-word-card {
     padding: 24px;
+
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -113,7 +118,7 @@
     color: rgba(0, 0, 0, 1);
 
     font-size: 24px;
-    font-weight: 600px;
+    font-weight: 600;
     line-height: 140%;
 }
 
@@ -123,7 +128,7 @@
     gap: 12px;
 }
 
-.word-bedge {
+.word-badge {
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 30px;
 
@@ -132,7 +137,90 @@
     display: inline-block;
 }
 
-.word-bedge:hover {
+.word-badge:hover {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main-bottom-pagination-box {
+    margin-top: 60px;
+
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+.pagination-container {
+    display: flex;
+    gap: 20px;
+}
+
+.pagination-change-link-box {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pagination-change-link-icon-box {
+    width: 16px;
+    height: 16px;
+}
+
+.pagination-change-link-text {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.pagination-divider {
+    color: rgba(0, 0, 0, 0.1);
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.pagination-active-text {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.pagination-text {
+    color: rgba(0, 0, 0, 0.4);
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.pagination-text:hover {
+    color: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+}
+
+.left-light-icon {
+    width: 100%;
+    height: 100%;
+    
+    background-image: url(assets/left-light-icon.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.right-light-icon {
+    width: 100%;
+    height: 100%;
+
+    background-image: url(assets/right-light-icon.png);
+    background-position: 50% 50%;
+    background-size: 100% 100%;
 }
