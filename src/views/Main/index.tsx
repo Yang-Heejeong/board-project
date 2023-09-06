@@ -88,15 +88,30 @@ export default function Main() {
       const tmpList = currentBoardListMock.filter((item, index) => index >= FIRST_INDEX && index < LAST_INDEX);
 
       setViewBoardList(tmpList);
+
     }, [currentPageNumber]);
+
+    useEffect(() => {
+      const FIRST_PAGE_INDEX = 10 * (currentSectionNumber -1) + 1;
+      const LAST_PAGE_INDEX = 10 * currentSectionNumber;
+      
+      const tmpPageNumberList = [];
+
+      const TOTAL_PAGE = Math.floor((currentBoardListMock.length - 1) / 5) + 1 /*페이지 총 개수*/
+
+      for (let pageNumber = FIRST_PAGE_INDEX; pageNumber <= LAST_PAGE_INDEX; pageNumber++) {
+        if (pageNumber > TOTAL_PAGE) break;
+        tmpPageNumberList.push(pageNumber);
+      }
+
+      setViewPageNumberList(tmpPageNumberList);
+
+    }, [currentSectionNumber])
 
     //          render: 메인 하단 컴포넌트 렌더링          //
     return (
       <div id='main-bottom-wrapper'>
         <div className='main-bottom-container'>
-          
-          <button onClick={() => setCurrentPageNumber(currentPageNumber + 1)}>+</button>
-
           <div className='main-bottom-title'>{'최신 게시물'}</div>
           <div className='main-bottom-contents-box'>
             <div className='main-bottom-latest-contents-box'>
@@ -116,6 +131,21 @@ export default function Main() {
             </div>
           </div>
           <div className='main-bottom-pagination-box'></div>
+          <div className='main-bottom-pagination-box'>
+            <div className='pagination-container'>
+              <div className='pagination-change-link-box'>
+                <div className='left-light-icon'></div>
+                <div className='pagination-change-link-text'>{'이전'}</div>
+              </div>
+              <div className='pagination-text'>{'\|'}</div>
+              { viewPageNumberList.map(pageNumber => pageNumber === currentPageNumber ? <div className='pagination-active-text'>{pageNumber}</div> : <div className='pagination-text'>{pageNumber}</div>) }
+              <div className='pagination-text'>{'\|'}</div>
+              <div className='pagination-change-link-box'>
+                <div className='pagination-change-link-text'>{'다음'}</div>
+                <div className='right-light-icon'></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
