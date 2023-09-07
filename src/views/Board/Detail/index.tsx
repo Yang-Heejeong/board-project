@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.css';
+import DefaultProfileImage from 'assets/default-profile-image.png';
 
 //          component: 게시물 상세보기 페이지          //
 export default function BoardDetail() {
 
   //          component: 게시물 상세보기 상단 컴포넌트          //
   const BoardDetailTop = () => {
+    
+    //          state: more button 상태          //
+    const [showMore, setShowMore] = useState<boolean>(false);
+    
+    //          event handler: more button 클릭 이벤트 처리          //
+    const onMoreButtonVlickHandler = () => {
+      setShowMore(!showMore);
+    }
 
     //          render: 게시물 상세보기 페이지 렌더링          //
     return (
@@ -14,23 +23,28 @@ export default function BoardDetail() {
           <div className='board-detail-title'>{'오늘점심뭐먹지 오늘점심뭐먹지'}</div>
           <div className='board-detail-sub-box'>
             <div className='board-detail-write-info-box'>
-              <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url()` }}></div>
+              <div className='board-detail-writer-profile-image' style={{ backgroundImage: `url(${DefaultProfileImage})` }}></div>
               <div className='board-detail-writer-nickname'>{'주코야키'}</div>
               <div className='board-detail-info-divider'>{'\|'}</div>
               <div className='board-detail-write-date'>{'2023. 09. 07.'}</div>
             </div>
-            <div className='icon-button'>
-              <div className='more-box'>
-                <div className='more-update-button'>{'수정'}</div>
-                <div className='divider'></div>
-                <div className='more-delete-button'>{'삭제'}</div>
-              </div>
+            <div className='icon-button' onClick={onMoreButtonVlickHandler}>
               <div className='more-icon'></div>
             </div>
+            {showMore && (
+            <div className='more-box'>
+              <div className='more-update-button'>{'수정'}</div>
+              <div className='divider'></div>
+              <div className='more-delete-button'>{'삭제'}</div>
+            </div>
+            )}
           </div>
         </div>
         <div className='divider'></div>
-        <div className='board-detail-top-main'></div>
+        <div className='board-detail-top-main'>
+          <div className='board-detail-main-text'>{'안녕하세요, 반갑습니다.'}</div>
+          <img />
+        </div>
       </div>
     )
   };
