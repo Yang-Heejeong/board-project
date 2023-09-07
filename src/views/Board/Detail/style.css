@@ -126,3 +126,23 @@
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.03);
 }
+
+.board-detail-top-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.board-detail-main-text {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 140%;
+
+    white-space: pre-wrap;
+}
+
+.board-detail-main-image {
+    width: 100%;
+}
