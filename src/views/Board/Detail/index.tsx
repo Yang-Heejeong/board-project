@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import './style.css';
 import DefaultProfileImage from 'assets/default-profile-image.png';
 import { Board } from 'types';
@@ -72,60 +72,100 @@ export default function BoardDetail() {
   };
   //          component: 게시물 상세보기 하단 컴포넌트          //
   const BoardDetailBottom = () => {
+
+    //          state: 댓글 textarea 참조 상태          //
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+    //          state: 좋아요 박스 상태          //
+    const [showFavorite, setShowFavorite] = useState<boolean>(false);
+    //          state: 댓글 박스 상태          //
+    const [showComments, setShowComments] = useState<boolean>(false);
+    //          state: 좋아요 상태          //
+    const [isFavorite, setFavorite] = useState<boolean>(false);
+    //          state: 댓글 상태          //
+    const [comment, setComment] = useState<string>('');
     
-  //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
-  return (
-    <div id='board-detail-bottom'>
-      <div className='board-detail-bottom-button-box'>
-        <div className='board-detail-bottom-button-group'>
-          <div className='icon-button'>
-            <div className='favorite-light-icon'></div>
-            {/* <div className='favorite-fill-icon'></div> */}
+    //          event handler: 좋아요 박스 보기 버튼 클릭 이벤트 처리          //
+    const onShowFacoriteButtonClickHandler = () => {
+      setShowFavorite(!showFavorite);
+    }
+    //          event handler: 댓글 박스 보기 버튼 클릭 이벤트 처리          //
+    const onShowCommentsButtonClickHandler = () => {
+      setShowComments(!showComments);
+    }
+    //          event handler: 좋아요 버튼 클릭 이벤트 처리          //
+    const onFavoriteButtonClickHandler = () => {
+      if (!user) {
+        alert('로그인시 이용가능합니다.');
+        return;
+      }
+      // TODO: API 연력로 변경
+      setFavorite(!isFavorite);
+    }
+    //          event handler: 댓글 변경 이벤트 처리          //
+    const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
+      const comment = event.target.value;
+      setComment(comment);
+      // description: textarea 내용이 바뀔때마다 높이 변경 //
+      if (!textareaRef.current) return;
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+
+    //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
+    return (
+      <div id='board-detail-bottom'>
+        <div className='board-detail-bottom-button-box'>
+          <div className='board-detail-bottom-button-group'>
+            <div className='icon-button' onClick={onFavoriteButtonClickHandler}>
+              {isFavorite ? (<div className='favorite-fill-icon'></div>) : (<div className='favorite-light-icon'></div>)}
+            </div>
+            <div className='board-detail-bottom-button-text'>{`좋아요 12`}</div>
+            <div className='icon-button' onClick={onShowFacoriteButtonClickHandler}>
+              {showFavorite ? (<div className='up-light-icon'></div>) : (<div className='down-light-icon'></div>)}
+            </div>
           </div>
-          <div className='board-detail-bottom-button-text'>{`좋아요 12`}</div>
-          <div className='icon-button'>
-            <div className='down-light-icon'></div>
-            {/* <div className='up-light-icon'></div> */}
-          </div>
-        </div>
-        <div className='board-detail-bottom-button-group'>
-          <div className='icon-box'>
-            <div className='comment-light-icon'></div>
-          </div>
-          <div className='board-detail-bottom-button-text'>{`댓글 3`}</div>
-          <div className='icon-button'>
-            <div className='down-light-icon'></div>
-            {/* <div className='up-light-icon'></div> */}
+          <div className='board-detail-bottom-button-group'>
+            <div className='icon-box'>
+              <div className='comment-light-icon'></div>
+            </div>
+            <div className='board-detail-bottom-button-text'>{`댓글 3`}</div>
+            <div className='icon-button' onClick={onShowCommentsButtonClickHandler}>
+            {showComments ? (<div className='up-light-icon'></div>) : (<div className='down-light-icon'></div>)}
           </div>
         </div>
       </div>
+      {showFavorite && (
       <div className='board-detail-bottom-favorite-box'>
         <div className='board-detail-bottom-favorite-container'>
           <div className='board-detail-bottom-favorite-title'>{'좋아요 '}<span className='emphasis'>{12}</span></div>
           <div className='board-detail-bottom-favorite-contents'></div>
         </div>
       </div>
+      )}
+      {showComments && (
       <div className='board-detail-bottom-comments-box'>
-        <div className='board-detail-bottom-comments-container'>
-           <div className='board-detail-bottom-comments-list-container'>
-            <div className='board-detail-bottom-comments-list-title'>{'댓글 '}<span className='emphasis'>{3}</span></div>
-            <div className='board-detail-bottom-comments-list-contents'></div>
-           </div>
-        </div>
-        <div className='divider'></div>
-        <div className='board-detail-bottom-comments-pagination-box'></div>
-        <div className='board-detail-bottom-comments-input-box'>
-          <div className='board-detail-bottom-comments-input-container'>
-            <textarea className='board-detail-bottom-comments-input' />
-            <div className='board-detail-bottom-comments-button-box'>
-              {/* <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div> */}
-              <div className='board-detail-bottom-comments-button-disable'>{'댓글달기'}</div>
+          <div className='board-detail-bottom-comments-container'>
+            <div className='board-detail-bottom-comments-list-container'>
+              <div className='board-detail-bottom-comments-list-title'>{'댓글 '}<span className='emphasis'>{3}</span></div>
+              <div className='board-detail-bottom-comments-list-contents'></div>
             </div>
           </div>
+          <div className='divider'></div>
+          <div className='board-detail-bottom-comments-pagination-box'></div>
+          {user !== null && (
+          <div className='board-detail-bottom-comments-input-box'>
+            <div className='board-detail-bottom-comments-input-container'>
+              <textarea ref={textareaRef} className='board-detail-bottom-comments-input' placeholder='댓글을 작성해주세요.' value={comment} onChange={onCommentChangeHandler} />
+              <div className='board-detail-bottom-comments-button-box'>
+                {comment.length === 0 ? (<div className='board-detail-bottom-comments-button-disable'>{'댓글달기'}</div>) : (<div className='board-detail-bottom-comments-button'>{'댓글달기'}</div>)}
+              </div>
+            </div>
+          </div>
+          )}
         </div>
+        )}
       </div>
-    </div>
-  )
+    )
   };
   
   //          render: 게시물 상세보기 페이지 렌더링          //
