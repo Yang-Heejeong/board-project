@@ -3,9 +3,11 @@ import './style.css';
 import DefaultProfileImage from 'assets/default-profile-image.png';
 import { Board, CommentItem, FavoriteItem } from 'types';
 import { useParams } from 'react-router-dom';
-import { boardMock, favoriteListMock } from 'mocks';
+import { boardMock, commentListMock, favoriteListMock } from 'mocks';
 import { useUserStore } from 'stores';
 import { usePagination } from 'hooks';
+import CommentListItem from 'components/CommentListItem';
+import Pagination from 'components/Pagination';
 
 //          component: 게시물 상세보기 페이지          //
 export default function BoardDetail() {
@@ -81,6 +83,8 @@ export default function BoardDetail() {
     const [favoriteList, setFavoriteList] = useState<FavoriteItem[]>([]);
     //          state: 댓글 리스트 페이지네이션 상태          //
     const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList,} = usePagination<CommentItem>(3);
+    //          state: 좋아요 박스 상태          //
+    const [commentsCount, setCommentsCount] = useState<number>(0);
 
     //          state: 좋아요 박스 상태          //
     const [showFavorite, setShowFavorite] = useState<boolean>(false);
@@ -121,6 +125,8 @@ export default function BoardDetail() {
     //          effect: 게시물 번호 path variable 바뛸때 마다 좋아요 및 댓글 리스트 불러오기          //
     useEffect(() => {
       setFavoriteList(favoriteListMock);
+      setBoardList(commentListMock);
+      setCommentsCount(commentListMock.length);
     }, [boardNumber])
 
     //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
@@ -140,7 +146,7 @@ export default function BoardDetail() {
             <div className='icon-box'>
               <div className='comment-light-icon'></div>
             </div>
-            <div className='board-detail-bottom-button-text'>{`댓글 3`}</div>
+            <div className='board-detail-bottom-button-text'>{`댓글 ${commentsCount}`}</div>
             <div className='icon-button' onClick={onShowCommentsButtonClickHandler}>
             {showComments ? (<div className='up-light-icon'></div>) : (<div className='down-light-icon'></div>)}
           </div>
@@ -165,12 +171,23 @@ export default function BoardDetail() {
       <div className='board-detail-bottom-comments-box'>
           <div className='board-detail-bottom-comments-container'>
             <div className='board-detail-bottom-comments-list-container'>
-              <div className='board-detail-bottom-comments-list-title'>{'댓글 '}<span className='emphasis'>{3}</span></div>
-              <div className='board-detail-bottom-comments-list-contents'></div>
+              <div className='board-detail-bottom-comments-list-title'>{'댓글 '}<span className='emphasis'>{commentsCount}</span></div>
+              <div className='board-detail-bottom-comments-list-contents'>
+                {viewBoardList.map(commentItem => <CommentListItem commentItem={commentItem} />)}
+              </div>
             </div>
           </div>
           <div className='divider'></div>
-          <div className='board-detail-bottom-comments-pagination-box'></div>
+          <div className='board-detail-bottom-comments-pagination-box'>
+            <Pagination
+              currentPageNumber={currentPageNumber}
+              currentSectionNumber={currentSectionNumber}
+              setCurrentPageNumber={setCurrentPageNumber}
+              setCurrentSectionNumber={setCurrentSectionNumber}
+              totalSection={totalSection}
+              viewPageNumberList={viewPageNumberList}
+            />
+          </div>
           {user !== null && (
           <div className='board-detail-bottom-comments-input-box'>
             <div className='board-detail-bottom-comments-input-container'>
