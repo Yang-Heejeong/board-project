@@ -201,6 +201,28 @@
     column-gap: 30px;
 }
 
+.board-detail-bottom-favorite-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.board-detail-bottom-favorite-profile-image {
+    width: 32px;
+    height: 32px;
+
+    background-position: 50% 50%;
+    background-size: 100% 100%;
+}
+
+.board-detail-bottom-favorite-nickname {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
 .board-detail-bottom-comments-box {
     display: flex;
     flex-direction: column;

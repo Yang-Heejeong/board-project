@@ -1,10 +1,11 @@
 import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import './style.css';
 import DefaultProfileImage from 'assets/default-profile-image.png';
-import { Board } from 'types';
+import { Board, CommentItem, FavoriteItem } from 'types';
 import { useParams } from 'react-router-dom';
-import { boardMock } from 'mocks';
+import { boardMock, favoriteListMock } from 'mocks';
 import { useUserStore } from 'stores';
+import { usePagination } from 'hooks';
 
 //          component: 게시물 상세보기 페이지          //
 export default function BoardDetail() {
@@ -75,6 +76,12 @@ export default function BoardDetail() {
 
     //          state: 댓글 textarea 참조 상태          //
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+    //          state: 좋아요 리스트 상태          //
+    const [favoriteList, setFavoriteList] = useState<FavoriteItem[]>([]);
+    //          state: 댓글 리스트 페이지네이션 상태          //
+    const {currentPageNumber, setCurrentPageNumber, currentSectionNumber, setCurrentSectionNumber, viewBoardList, viewPageNumberList, totalSection, setBoardList,} = usePagination<CommentItem>(3);
+
     //          state: 좋아요 박스 상태          //
     const [showFavorite, setShowFavorite] = useState<boolean>(false);
     //          state: 댓글 박스 상태          //
@@ -111,6 +118,11 @@ export default function BoardDetail() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
 
+    //          effect: 게시물 번호 path variable 바뛸때 마다 좋아요 및 댓글 리스트 불러오기          //
+    useEffect(() => {
+      setFavoriteList(favoriteListMock);
+    }, [boardNumber])
+
     //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
     return (
       <div id='board-detail-bottom'>
@@ -119,7 +131,7 @@ export default function BoardDetail() {
             <div className='icon-button' onClick={onFavoriteButtonClickHandler}>
               {isFavorite ? (<div className='favorite-fill-icon'></div>) : (<div className='favorite-light-icon'></div>)}
             </div>
-            <div className='board-detail-bottom-button-text'>{`좋아요 12`}</div>
+            <div className='board-detail-bottom-button-text'>{`좋아요 ${favoriteList.length}`}</div>
             <div className='icon-button' onClick={onShowFacoriteButtonClickHandler}>
               {showFavorite ? (<div className='up-light-icon'></div>) : (<div className='down-light-icon'></div>)}
             </div>
@@ -137,8 +149,15 @@ export default function BoardDetail() {
       {showFavorite && (
       <div className='board-detail-bottom-favorite-box'>
         <div className='board-detail-bottom-favorite-container'>
-          <div className='board-detail-bottom-favorite-title'>{'좋아요 '}<span className='emphasis'>{12}</span></div>
-          <div className='board-detail-bottom-favorite-contents'></div>
+          <div className='board-detail-bottom-favorite-title'>{'좋아요 '}<span className='emphasis'>{favoriteList.length}</span></div>
+          <div className='board-detail-bottom-favorite-contents'>
+            {favoriteList.map(favoriteItem => (
+            <div className='board-detail-bottom-favorite-item'>
+              <div className='board-detail-bottom-favorite-profile-image' style={{ backgroundImage: `url(${favoriteItem.profileImage ? favoriteItem.profileImage : DefaultProfileImage})`}}></div>
+              <div className='board-detail-bottom-favorite-nickname'>{favoriteItem.nickname}</div>
+            </div>
+            ))}
+          </div>
         </div>
       </div>
       )}
