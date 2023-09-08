@@ -30,7 +30,7 @@
 
     font-size: 32px;
     font-weight: 600;
-    line-height: 140%;
+    line-height: 140%;;
 }
 
 .board-detail-sub-box {
@@ -65,7 +65,7 @@
 
 .board-detail-info-divider {
     color: rgba(0, 0, 0, 0.4);
-    
+
     font-size: 16px;
     font-weight: 400;
     line-height: 140%;
@@ -84,6 +84,8 @@
     top: -96px;
     right: 0px;
 
+    background-color: rgba(255, 255, 255, 1);
+
     box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -96,7 +98,6 @@
     align-items: center;
 
     color: rgba(0, 0, 0, 0.5);
-
     font-size: 14px;
     font-weight: 600;
     line-height: 140%;
@@ -110,13 +111,12 @@
 .more-delete-button {
     width: 143px;
     height: 40px;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
 
     color: rgba(255, 0, 0, 0.5);
-
     font-size: 14px;
     font-weight: 600;
     line-height: 140%;
@@ -145,4 +145,21 @@
 
 .board-detail-main-image {
     width: 100%;
+}
+
+#board-detail-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.board-detail-bottom-button-box {
+    display: flex;
+    gap: 12px;
+}
+
+.board-detail-bottom-button-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }

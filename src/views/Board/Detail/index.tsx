@@ -73,10 +73,57 @@ export default function BoardDetail() {
   //          component: 게시물 상세보기 하단 컴포넌트          //
   const BoardDetailBottom = () => {
     
-  //          render: 게시물 상세보기 페이지 렌더링          //
+  //          render: 게시물 상세보기 하단 컴포넌트 렌더링          //
   return (
-    <div>
-
+    <div id='board-detail-bottom'>
+      <div className='board-detail-bottom-button-box'>
+        <div className='board-detail-bottom-button-group'>
+          <div className='icon-button'>
+            <div className='favorite-light-icon'></div>
+            {/* <div className='favorite-fill-icon'></div> */}
+          </div>
+          <div className='board-detail-bottom-button-text'>{`좋아요 12`}</div>
+          <div className='icon-button'>
+            <div className='down-light-icon'></div>
+            {/* <div className='up-light-icon'></div> */}
+          </div>
+        </div>
+        <div className='board-detail-bottom-button-group'>
+          <div className='icon-box'>
+            <div className='comment-light-icon'></div>
+          </div>
+          <div className='board-detail-bottom-button-text'>{`댓글 3`}</div>
+          <div className='icon-button'>
+            <div className='down-light-icon'></div>
+            {/* <div className='up-light-icon'></div> */}
+          </div>
+        </div>
+      </div>
+      <div className='board-detail-bottom-favorite-box'>
+        <div className='board-detail-bottom-favorite-container'>
+          <div className='board-detail-bottom-favorite-title'>{`좋아요 12`}</div>
+          <div className='board-detail-bottom-favorite-contents'></div>
+        </div>
+      </div>
+      <div className='board-detail-bottom-comments-box'>
+        <div className='board-detail-bottom-comments-container'>
+           <div className='board-detail-bottom-comments-list-container'>
+            <div className='board-detail-bottom-comments-list-title'>{`댓글 3`}</div>
+            <div className='board-detail-bottom-comments-list-contents'></div>
+           </div>
+        </div>
+        <div className='divider'></div>
+        <div className='board-detail-bottom-comments-pagination-box'></div>
+        <div className='board-detail-bottom-comments-input-box'>
+          <div className='board-detail-bottom-comments-input-container'>
+            <textarea className='board-detail-bottom-comments-input' />
+            <div className='board-detail-bottom-comments-button-box'>
+              <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div>
+              <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
   };
