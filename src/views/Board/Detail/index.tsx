@@ -101,14 +101,14 @@ export default function BoardDetail() {
       </div>
       <div className='board-detail-bottom-favorite-box'>
         <div className='board-detail-bottom-favorite-container'>
-          <div className='board-detail-bottom-favorite-title'>{`좋아요 12`}</div>
+          <div className='board-detail-bottom-favorite-title'>{'좋아요 '}<span className='emphasis'>{12}</span></div>
           <div className='board-detail-bottom-favorite-contents'></div>
         </div>
       </div>
       <div className='board-detail-bottom-comments-box'>
         <div className='board-detail-bottom-comments-container'>
            <div className='board-detail-bottom-comments-list-container'>
-            <div className='board-detail-bottom-comments-list-title'>{`댓글 3`}</div>
+            <div className='board-detail-bottom-comments-list-title'>{'댓글 '}<span className='emphasis'>{3}</span></div>
             <div className='board-detail-bottom-comments-list-contents'></div>
            </div>
         </div>
@@ -118,8 +118,8 @@ export default function BoardDetail() {
           <div className='board-detail-bottom-comments-input-container'>
             <textarea className='board-detail-bottom-comments-input' />
             <div className='board-detail-bottom-comments-button-box'>
-              <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div>
-              <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div>
+              {/* <div className='board-detail-bottom-comments-button'>{'댓글달기'}</div> */}
+              <div className='board-detail-bottom-comments-button-disable'>{'댓글달기'}</div>
             </div>
           </div>
         </div>
