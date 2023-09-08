@@ -2,12 +2,13 @@ import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import './style.css';
 import DefaultProfileImage from 'assets/default-profile-image.png';
 import { Board, CommentItem, FavoriteItem } from 'types';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { boardMock, commentListMock, favoriteListMock } from 'mocks';
 import { useUserStore } from 'stores';
 import { usePagination } from 'hooks';
 import CommentListItem from 'components/CommentListItem';
 import Pagination from 'components/Pagination';
+import { BOARD_UPDATE_PATH, MAIN_PATH } from 'constant';
 
 //          component: 게시물 상세보기 페이지          //
 export default function BoardDetail() {
@@ -16,6 +17,9 @@ export default function BoardDetail() {
   const { boardNumber } = useParams();
   //          state: 로그인 유저 상태          //
   const { user } = useUserStore();
+
+  //          function: 네비게이트 함수          //
+  const navigator = useNavigate();
 
   //          component: 게시물 상세보기 상단 컴포넌트          //
   const BoardDetailTop = () => {
@@ -29,6 +33,16 @@ export default function BoardDetail() {
     //          event handler: more button 클릭 이벤트 처리          //
     const onMoreButtonVlickHandler = () => {
       setShowMore(!showMore);
+    }
+    //          event handler: 수정 버튼 클릭 이벤트 처리          //
+    const onUpdateButtonClickHandler = () => {
+      if (!boardNumber) return;
+      navigator(BOARD_UPDATE_PATH(boardNumber));
+    }
+    //          event handler: 삭제 버튼 클릭 이벤트 처리          //
+    const onDeleteButtonClickHandler = () => {
+      alert (`${boardNumber} 게시물 삭제!`);
+      navigator(MAIN_PATH);
     }
 
     //          effect: 게시물 번호 path variable이 바뀔때 마다 게시물 불러오기          //
@@ -58,9 +72,9 @@ export default function BoardDetail() {
             )}
             {showMore && (
             <div className='more-box'>
-              <div className='more-update-button'>{'수정'}</div>
+              <div className='more-update-button' onClick={onUpdateButtonClickHandler}>{'수정'}</div>
               <div className='divider'></div>
-              <div className='more-delete-button'>{'삭제'}</div>
+              <div className='more-delete-button' onClick={onDeleteButtonClickHandler}>{'삭제'}</div>
             </div>
             )}
           </div>
