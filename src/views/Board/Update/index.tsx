@@ -3,6 +3,7 @@ import './style.css';
 import { useBoardStore } from 'stores';
 import { useParams } from 'react-router-dom';
 import { boardMock } from 'mocks';
+import { convertUrlsToFiles } from 'utils';
 
 //          component: 게시물 수정 화면          //
 export default function BoardUpdate() {
@@ -16,7 +17,7 @@ export default function BoardUpdate() {
   //          state: 게시물 상태          //
   const { title, setTitle } = useBoardStore();
   const { contents, setContents } = useBoardStore();
-  const { image, setImage } = useBoardStore();
+  const { images, setImages } = useBoardStore();
   //          state: 게시물 이미지 URL 상태          //
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
@@ -40,9 +41,11 @@ export default function BoardUpdate() {
     const imageUrl = URL.createObjectURL(file);
     const newImageUrls = imageUrls.map(url => url);
     newImageUrls.push(imageUrl);
+    const newImages = images.map(image => image);
+    newImages.push(file);
 
     setImageUrls(newImageUrls);
-    setImage(file);
+    setImages(newImages);
   }
 
   //          event handler: 이미지 업로드 버튼 클릭 이벤트 처리          //
@@ -50,13 +53,15 @@ export default function BoardUpdate() {
     if (!imageInputRef.current) return;
     imageInputRef.current.click();
   }
+
   //          event handler: 이미지 닫기 버튼 클릭 이벤트 처리          //
   const onImageCloseButtonClickHandler = (deleteIndex: number) => {
     if (!imageInputRef.current) return;
     imageInputRef.current.value = '';
     const newImageUrls = imageUrls.filter((url, index) => index !== deleteIndex);
     setImageUrls(newImageUrls);
-    setImage(null);
+    const newImages = images.filter((image, index) => index !== deleteIndex);
+    setImages(newImages);
   }
 
   //          effect: 게시물 번호 path variable이 변경될 때마다 실행될 함수          //
@@ -65,6 +70,7 @@ export default function BoardUpdate() {
     const { title, contents, imageUrls } = boardMock;
     setTitle(title);
     setContents(contents);
+    convertUrlsToFiles(imageUrls).then(files => setImages(files));
     setImageUrls(imageUrls);
   }, [boardNumber]);
 

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState, useEffect } from 'react';
 import './style.css';
 import { useBoardStore } from 'stores';
 
 //          component: 게시물 작성 화면          //
 export default function BoardWrite() {
-
+  
   //          state: 이미지 인풋 ref 상태          //
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   //          state: 본문 텍스트 영역 ref 상태          //
@@ -12,9 +12,9 @@ export default function BoardWrite() {
   //          state: 게시물 상태          //
   const { title, setTitle } = useBoardStore();
   const { contents, setContents } = useBoardStore();
-  const { image, setImage } = useBoardStore();
+  const { images, setImages, resetBoard } = useBoardStore();
   //          state: 게시물 이미지 URL 상태          //
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   //          event handler: 제목 변경 이벤트 처리          //
   const onTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +34,13 @@ export default function BoardWrite() {
     if (!event.target.files || !event.target.files.length) return;
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
-    setImageUrl(imageUrl);
-    setImage(file);
+    const newImageUrls = imageUrls.map(url => url);
+    newImageUrls.push(imageUrl);
+    const newImages = images.map(image => image);
+    newImages.push(file);
+
+    setImageUrls(newImageUrls);
+    setImages(newImages);
   }
 
   //          event handler: 이미지 업로드 버튼 클릭 이벤트 처리          //
@@ -43,13 +48,21 @@ export default function BoardWrite() {
     if (!imageInputRef.current) return;
     imageInputRef.current.click();
   }
+
   //          event handler: 이미지 닫기 버튼 클릭 이벤트 처리          //
-  const onImageCloseButtonClickHandler = () => {
+  const onImageCloseButtonClickHandler = (deleteIndex: number) => {
     if (!imageInputRef.current) return;
     imageInputRef.current.value = '';
-    setImageUrl('');
-    setImage(null);
+    const newImageUrls = imageUrls.filter((url, index) => index !== deleteIndex);
+    setImageUrls(newImageUrls);
+    const newImages = images.filter((image, index) => index !== deleteIndex);
+    setImages(newImages);
   }
+
+  //          effect: 마운트 시 실행할 함수          //
+  useEffect(() => {
+    resetBoard();
+  }, []);
 
   //          render: 게시물 작성 화면 렌더링          //
   return (
@@ -68,14 +81,14 @@ export default function BoardWrite() {
             </div>
           </div>
           <div className='board-write-images-box'>
-            {imageUrl !== '' && (
+            {imageUrls.map((imageUrl, index) => (
             <div className='board-write-image-box'>
               <img className='board-write-image' src={imageUrl} />
-              <div className='icon-button image-close' onClick={onImageCloseButtonClickHandler}>
+              <div className='icon-button image-close' onClick={() => onImageCloseButtonClickHandler(index)}>
                 <div className='close-icon'></div>
               </div>
             </div>
-            )}
+            ))}
           </div>
         </div>
       </div>
