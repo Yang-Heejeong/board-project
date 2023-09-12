@@ -126,7 +126,7 @@ export default function BoardDetail() {
     //          event handler: 좋아요 버튼 클릭 이벤트 처리          //
     const onFavoriteButtonClickHandler = () => {
       if (!user) {
-        alert('로그인시 이용가능합니다.');
+        alert ('로그인시 이용가능합니다.');
         return;
       }
       // TODO: API 연력로 변경
